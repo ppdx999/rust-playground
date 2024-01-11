@@ -5,8 +5,7 @@ use std::io::prelude::*;
 use std::process;
 
 pub fn main() {
-    let args: Vec<String> = env::args().collect();
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         println!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
@@ -23,14 +22,18 @@ struct Config {
 }
 
 impl Config {
-    fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-        // There will be another better way to do the same thing
-        // without cloning the args
-        let query = args[1].clone();
-        let filename = args[2].clone();
+    fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        args.next(); // skip the program name
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a filename string"),
+        };
 
         Ok(Config { query, filename })
     }
