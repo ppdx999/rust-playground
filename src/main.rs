@@ -3,7 +3,8 @@
 // mod minigrep;
 // mod mock;
 // mod thread;
-mod mutex;
+// mod mutex;
+mod trait_objects;
 
 fn main() {
     // guessing_game::main();
@@ -11,5 +12,6 @@ fn main() {
     // minigrep::main();
     // thread::single_message();
     // thread::multiple_message();
-    mutex::main();
+    // mutex::main();
+    trait_objects::main();
 }
